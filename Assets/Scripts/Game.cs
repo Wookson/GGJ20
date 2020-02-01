@@ -15,8 +15,9 @@ public class Game : MonoBehaviour
     [SerializeField] private Transform InstructionPosition;
 
     private GameObject CurrentLevel;
-    private GameObject CurrentInstruction;
-    private bool FinishedInstruction;
+    private GameObject CurrentInfo;
+    private bool FinishedInstruction = true;
+    private string CurrentInstruction;
 
     //Time limit
     private float Timer = 30;
@@ -33,7 +34,7 @@ public class Game : MonoBehaviour
         {
             Timer -= Time.deltaTime;
             Hud.GetComponent<HUD>().UpdateTimer(Timer);
-            if (Timer > 0 && FinishedInstruction == true)
+            if (Timer < 0 || FinishedInstruction == true)
             {
                 //New instruction
             }
@@ -67,8 +68,8 @@ public class Game : MonoBehaviour
 
     public void Change(int choice)
     {
-        if (CurrentInstruction != null)
-            Destroy(CurrentInstruction);
-        CurrentInstruction = Instantiate(Instructions[choice],InstructionPosition);
+        if (CurrentInfo != null)
+            Destroy(CurrentInfo);
+        CurrentInfo = Instantiate(Instructions[choice],InstructionPosition);
     }
 }

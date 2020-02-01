@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject UIBk;
-
-    Animator anim;
+    [SerializeField] private Game game;
+    public Animator anim;
     Rigidbody2D rb;
+    Transform obj;
 
     void Start()
     {
@@ -25,22 +25,56 @@ public class Player : MonoBehaviour
         else
             anim.speed = 1.0f;
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if(Input.GetKeyDown(KeyCode.T))
         {
-            if (UIBk.activeSelf == false)
+            if (this.transform.childCount != 0)
             {
-                UIBk.SetActive(true);
-            }
-            else if (UIBk.activeSelf == true)
-            {
-                UIBk.SetActive(false);
+                anim.SetTrigger("triggerpick");
+                obj.parent = game.transform;
+                Invoke("stop", 1);
+                if (rb.velocity.x < -0.01)
+                {
+                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.left;
+                }
+                if (rb.velocity.x > 0.01)
+                {
+                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.right;                }
+                if (rb.velocity.y < -0.01)
+                {
+                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.down;
+                }
+                if (rb.velocity.y > 0.01)
+                {
+                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.up;
+                }
             }
         }
+    }
+
+    void stop()
+    {
+        obj.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     void FixedUpdate()
     {
         float speed = 2.0f;
         rb.velocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * speed;
+    }
+
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.tag == "Pickupable")
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                anim.SetTrigger("triggerpick");
+                if (collision.transform.parent == game.transform)
+                {
+                    collision.transform.SetParent(this.transform);
+                    obj = collision.transform;
+                }
+            }
+        }
     }
 }

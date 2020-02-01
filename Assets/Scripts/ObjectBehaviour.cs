@@ -19,13 +19,12 @@ public class ObjectBehaviour : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.E))
         {
             grabbed = !grabbed;
-            
+            //player.GetComponent<Player>().anim.SetTrigger("istrigger");
         }
 
         if (grabbed)
         {
             gameObject.transform.SetParent(player.transform);
-            //gameObject.transform.position = new Vector2(player.transform.position.x + offset, player.transform.position.y);
         }
         else if(!grabbed)
         {
@@ -43,6 +42,7 @@ public class ObjectBehaviour : MonoBehaviour
         if (coll.gameObject.tag == "Player")
         {
             player = coll.gameObject;
+            
         }
           
     }
