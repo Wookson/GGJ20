@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject UIBk;
 
     Animator anim;
     Rigidbody2D rb;
@@ -23,6 +24,18 @@ public class Player : MonoBehaviour
             anim.speed = 0.0f;
         else
             anim.speed = 1.0f;
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (UIBk.activeSelf == false)
+            {
+                UIBk.SetActive(true);
+            }
+            else if (UIBk.activeSelf == true)
+            {
+                UIBk.SetActive(false);
+            }
+        }
     }
 
     void FixedUpdate()
