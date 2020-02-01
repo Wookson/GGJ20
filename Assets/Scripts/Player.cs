@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject UIBk;
 
     Animator anim;
     Rigidbody2D rb;
@@ -24,7 +25,6 @@ public class Player : MonoBehaviour
         else
             anim.speed = 1.0f;
     }
-
     void FixedUpdate()
     {
         float speed = 2.0f;
