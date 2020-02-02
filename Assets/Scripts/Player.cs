@@ -5,6 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private Game game;
+
+    private bool InHand;
+
     public Animator anim;
     Rigidbody2D rb;
     Transform obj;
@@ -31,29 +34,41 @@ public class Player : MonoBehaviour
             {
                 anim.SetTrigger("triggerpick");
                 obj.parent = game.transform;
-                Invoke("stop", 1);
-                if (rb.velocity.x < -0.01)
+                //fragile so destroys
+                if (obj.tag == "Fragile")
                 {
-                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.left;
+                    Destroy(obj.gameObject);
+                    InHand = false;
                 }
-                if (rb.velocity.x > 0.01)
+                else
                 {
-                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.right;                }
-                if (rb.velocity.y < -0.01)
-                {
-                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.down;
-                }
-                if (rb.velocity.y > 0.01)
-                {
-                    obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.up;
+                    StartCoroutine(WaitSec(1));
+                    if (rb.velocity.x < -0.01)
+                    {
+                        obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.left;
+                    }
+                    if (rb.velocity.x > 0.01)
+                    {
+                        obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.right;
+                    }
+                    if (rb.velocity.y < -0.01)
+                    {
+                        obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.down;
+                    }
+                    if (rb.velocity.y > 0.01)
+                    {
+                        obj.GetComponent<Rigidbody2D>().velocity += 3 * Vector2.up;
+                    }
                 }
             }
         }
     }
 
-    void stop()
+    private IEnumerator WaitSec(float wait)
     {
+        yield return new WaitForSeconds(wait);
         obj.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        InHand = false;
     }
 
     void FixedUpdate()
@@ -64,15 +79,26 @@ public class Player : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Pickupable")
+        if(collision.tag == "Pickupable" || collision.tag == "Fragile")
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
                 anim.SetTrigger("triggerpick");
                 if (collision.transform.parent == game.transform)
                 {
-                    collision.transform.SetParent(this.transform);
-                    obj = collision.transform;
+                    if (InHand == false)
+                    {
+                        InHand = true;
+                        Debug.Log(InHand);
+                        Debug.Log(collision);
+                        collision.transform.SetParent(this.transform);
+                        obj = collision.transform;
+                    }
+                }
+                else
+                {
+                    obj.parent = game.transform;
+                    InHand = false;
                 }
             }
         }
