@@ -88,11 +88,11 @@ public class Player : MonoBehaviour
                 {
                     if (InHand == false)
                     {
-                        InHand = true;
                         Debug.Log(InHand);
-                        Debug.Log(collision);
+                        Debug.Log(collision.transform);
                         collision.transform.SetParent(this.transform);
                         obj = collision.transform;
+                        InHand = true;
                     }
                 }
                 else

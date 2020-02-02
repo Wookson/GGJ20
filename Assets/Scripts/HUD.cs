@@ -18,7 +18,12 @@ public class HUD : MonoBehaviour
     {
         for(int i = 0; i < Amount; i++)
         {
-            Destroy(Strikes[Strikes.Count - Amount]);
+            if (Strikes.Count != 0)
+                Destroy(Strikes[Strikes.Count - Amount]);
+            else
+            {
+                //end
+            }
         }
     }
 

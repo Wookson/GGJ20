@@ -10,8 +10,8 @@ public class Game : MonoBehaviour
     [SerializeField] private Player Character;
     [SerializeField] private List<GameObject> Levels;
     [SerializeField] private List<GameObject> Instructions;
-    [SerializeField] private List<GameObject> Items;
-    [SerializeField] private List<GameObject> Parts;
+    public List<GameObject> Items;
+    public List<GameObject> Parts;
     [SerializeField] private List<GameObject> Tools;
     [SerializeField] private List<GameObject> Conveyors;
     [SerializeField] private GameObject Hud;
@@ -26,7 +26,7 @@ public class Game : MonoBehaviour
     private bool FinishedInstruction;
 
     //Time limit
-    private float Timer = 30;
+    private float Timer = 120;
 
     // Update is called once per frame
     private void Start()
@@ -76,9 +76,11 @@ public class Game : MonoBehaviour
                     }
                     FinishedInstruction = false;
                     //hud instruction display needts to be done
+                    Hud.GetComponent<HUD>().UpdateStrikes(1);
+                    Timer = 120;
+                    Hud.GetComponent<HUD>().UpdateTimer(120);
                 }
             }
-            
         }
     }
 

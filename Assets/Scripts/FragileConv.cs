@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class FragileConv : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Fragile")
+        Debug.Log("here");
+        if (coll.gameObject.tag == "Player" && coll.gameObject.GetComponentInChildren<Transform>().tag == "Fragile")
         {
-            coll.gameObject.transform.position = new Vector3((gameObject.transform.position.x + 0.5f), (gameObject.transform.position.y + 2f), gameObject.transform.position.z);
+            coll.gameObject.GetComponentInChildren<Transform>().parent = coll.gameObject.GetComponentInParent<Game>().transform;
+            coll.gameObject.GetComponentInChildren<Transform>().position = new Vector3((gameObject.transform.position.x + 0.5f), (gameObject.transform.position.y + 2f), gameObject.transform.position.z);
         }
     }
 }
